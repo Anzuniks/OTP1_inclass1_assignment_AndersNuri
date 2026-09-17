@@ -1,0 +1,9 @@
+Tässä koko homma yhdistettynä sun omista muistiinpanoista ja open antamasta tehtävänannosta.
+
+Muutama huomio, jotka kannattaa tarkistaa:
+
+- **Komento Maven-buildissa**: sun muistiinpanoissa oli `mvn clean install`, mutta itse tehtävänannossa Jenkinsin build stepiin ehdotetaan `mvn test` tai `mvn clean verify`. JaCoCon kannalta `verify` on turvallisempi valinta, koska JaCoCo-raportin generointi on usein sidottu `verify`-vaiheeseen (riippuu pom.xml:n pluginin konfiguraatiosta, `<execution>`-kohdista).
+- **Post-build actionin nimi**: sun muistiinpanoissa lukee "Record JACOCO coverage report", tehtävänannossa taas "Publish coverage report" — nämä ovat todennäköisesti sama Jenkins-pluginin toiminto, mutta nimi voi vaihdella Jenkins-versiosta riippuen. Kannattaa vaan katsoa Post-build action -listasta se, jossa lukee jacoco/coverage.
+- **Nimeäminen**: tehtävänannossa pyydetään job-nimeen ja screenshotiin oma nimi näkyviin (esim. `Nimi_Tempreture_V1`), älä unohda tätä kohtaa arvostelun takia.
+
+Jos haluat, voin auttaa myös itse kelvinToCelsius-funktion ja JUnit-testien koodaamisessa.
