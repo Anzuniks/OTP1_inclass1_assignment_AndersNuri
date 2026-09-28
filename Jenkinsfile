@@ -1,5 +1,3 @@
-// Needs Jenkins plugins: Pipeline, Git, JUnit, JaCoCo, Docker Pipeline
-// and a "Username with password" credential for Docker Hub with the id below.
 def dockerImage
 
 pipeline {
@@ -20,18 +18,12 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                // Tests use an in-memory H2 database, so no MariaDB is needed here
                 script { runCmd('mvn -B clean verify') }
             }
             post {
                 always {
                     junit '**/target/surefire-reports/*.xml'
-                    jacoco(
-                        execPattern: '**/target/jacoco.exec',
-                        classPattern: '**/target/classes',
-                        sourcePattern: '**/src/main/java',
-                        exclusionPattern: '**/Launcher.class'
-                    )
+                    recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
                 }
             }
         }
@@ -57,7 +49,6 @@ pipeline {
     }
 }
 
-// Works on both Linux (sh) and Windows (bat) Jenkins agents
 def runCmd(String cmd) {
     if (isUnix()) {
         sh cmd
