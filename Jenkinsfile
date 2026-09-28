@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
+        DOCKERHUB_CREDENTIALS_ID = 'dockerhub-credentials'
         DOCKERHUB_REPO = 'anzuniks/temperature-converter'
         DOCKER_IMAGE_TAG = 'latest'
     }
