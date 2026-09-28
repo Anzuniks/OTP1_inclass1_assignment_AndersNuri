@@ -5,7 +5,7 @@ pipeline {
         // Jenkinsin credentialin ID (Manage Jenkins -> Credentials)
         DOCKERHUB_CREDENTIALS_ID = 'dockerhub-credentials'
         // VAIHDA: oma Docker Hub -käyttäjänimi (pienillä kirjaimilla)
-        DOCKER_IMAGE = 'SINUN_DOCKERHUB_NIMI/temperature-converter'
+        DOCKER_IMAGE = 'anzuniks/temperature-converter'
         DOCKER_TAG = 'latest'
     }
 
