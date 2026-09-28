@@ -24,6 +24,8 @@
     </dependencies>
 
     <build>
+        <!-- Kiinteä jar-nimi, jotta Dockerfile löytää sen aina -->
+        <finalName>temperature-converter</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -48,6 +50,20 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Tekee jarista ajettavan (java -jar) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- Ohjelman käynnistysluokka -->
+                            <mainClass>temperature.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
