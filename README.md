@@ -40,14 +40,20 @@ The application follows a **layered architecture**, with each layer in its own p
 | root | `TempCalculator` contains the conversion logic, `Main` is the JavaFX user interface |
 
 **Database design:**
-- `temperature_unit` – the three supported units (Celsius, Fahrenheit, Kelvin) with their code, name and symbol
-- `temp_record` – saved conversions, linked to the source and target units with foreign keys, plus a timestamp
+The database has two related tables:
+
+| Table | Columns | Description |
+|-------|---------|-------------|
+| `temperature_unit` | `id` (PK), `code` (unique), `name` | The three supported units: C (Celsius), F (Fahrenheit), K (Kelvin) |
+| `temp_record` | `id` (PK), `input_value`, `from_unit_id` (FK), `result_value`, `to_unit_id` (FK), `created_at` | One saved conversion |
+
+`temp_record` references `temperature_unit` twice through the foreign keys `fk_record_from` and `fk_record_to` (one-to-many relationship: one unit can appear in many records).
 
 **Key decisions:**
 - Conversion logic (`TempCalculator`) is separated from the GUI and database code, so it can be unit tested independently.
 - The DAO pattern keeps SQL queries out of the rest of the application.
 - `DBConnection` creates the schema and seeds the temperature units automatically on startup, only once.
-- Database connection settings are read from environment variables, with default values as a fallback.
+- Database connection settings are read from the environment variables `DB_URL`, `DB_USER` and `DB_PASSWORD`, with local default values as a fallback. Tests override them with `DBConnection.configure()` to use H2.
 - Input validation: unit codes are case-insensitive, both dot and comma are accepted as decimal separators, and temperatures below absolute zero are rejected.
 - Tests use an H2 in-memory database instead of MariaDB, so the test suite and the Jenkins pipeline run without an external database server.
 - A Jenkins pipeline automatically builds the project, runs all tests and generates a JaCoCo coverage report.
@@ -92,7 +98,24 @@ cd OTP1_inclass1_assignment_AndersNuri
 
 **2. Set up the database**
 
-Create an empty database in MariaDB. The tables and temperature units are created automatically when the application starts. Connection settings are read from environment variables; if they are not set, the default values in `DBConnection.java` are used.
+Create the database and user in MariaDB (these match the default settings):
+
+```sql
+CREATE DATABASE tempdb;
+CREATE USER 'tempuser'@'localhost' IDENTIFIED BY 'temppass';
+GRANT ALL PRIVILEGES ON tempdb.* TO 'tempuser'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+The tables and the three temperature units are created automatically when the application starts.
+
+To use different connection settings, set these environment variables before running:
+
+| Variable | Default |
+|----------|---------|
+| `DB_URL` | `jdbc:mariadb://localhost:3306/tempdb` |
+| `DB_USER` | `tempuser` |
+| `DB_PASSWORD` | `temppass` |
 
 **3. Run the tests**
 ```bash
