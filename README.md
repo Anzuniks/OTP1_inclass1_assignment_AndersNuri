@@ -92,7 +92,7 @@ The database has two related tables:
 
 **1. Clone the repository**
 ```bash
-git clone [repo-URL]
+git clone https://github.com/Anzuniks/OTP1_inclass1_assignment_AndersNuri
 cd OTP1_inclass1_assignment_AndersNuri
 ```
 
